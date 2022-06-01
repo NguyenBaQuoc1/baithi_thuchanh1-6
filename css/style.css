@@ -1,0 +1,35 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+select {
+    width: 100%;
+}
+
+input[type="text"] {
+    margin-bottom: 5px;
+}
+
+body {
+    background: url(/hinh-anh-cafe-dep.jpeg);
+}
+
+.header {
+    width: 800px;
+    margin: auto auto;
+    color: #fff;
+    background-color: rgb(164, 164, 37);
+    border-radius: 6px;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}

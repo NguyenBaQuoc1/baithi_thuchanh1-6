@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cà Phê</title>
+    <script src="/js/angular.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"> 
+</head>
+<body ng-app="myApp">
+    <div class="header">
+        <form action="">
+            <div class="row" ng-controller="MathController">
+                <div class="col">
+                    <p style="font-weight: bold;">Danh Mục</p>
+                    
+                    <select ng-options="listMenu for listMenu in listMenus" ng-model="selectedD" ng-init = "true"></select> 
+                </div>
+        
+                <div class="col">
+                    <p style="font-weight: bold;">Size: </p>
+                    <select ng-options="size for size in sizeS" ng-model="selectedG" ng-init="selectedG = true"></select>
+                </div>
+                
+                <div class="col">
+                    <p style="font-weight: bold;">Giá</p>
+                    <p>Giá Tiền: {{price}}VND</p>
+                    <p>Số Lượng: <input type="number" ng-model="aMount" min="1" required /> </p>
+                </div>
+                <div ng-switch on="selectedD">
+                    <div ng-switch-when="Matcha"></div>
+                    <div ng-switch-when="Coffe"></div>
+                    <div ng-switch-when="Pizza"></div>
+                </div>
+                <div ng-switch on="selectedG">
+                    <div ng-switch-when="M"></div>
+                    <div ng-switch-when="L"></div>
+                </div>
+                    <p> Tổng số tiền: ${{empInsurance()}}</p>
+                    
+                    <p> VAT: ${{incomeTax()}}</p>
+                    
+                
+                    <p> Tổng tiền + VAT: ${{totalSalary().toFixed(2)}}</p>
+                        <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    THANH TOÁN
+                </button>
+            </div>
+        </form>
+    </div>
+  <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form action="" name="myForms">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">THÔNG TIN KHÁCH HÀNG</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                <div class="modal-body">
+                    <p> Bạn đã đặt : {{selectedD}} </p>
+                    <p> Số Lượng : {{aMount}} </p>
+                    <p> VAT: ${{incomeTax()}}</p>
+                    <p> Tổng tiền + VAT: ${{totalSalary().toFixed(2)}}</p>
+                    
+                    <div class="row">
+                        <div class="col">
+                            Họ Và Tên
+                            <input type="text" name="name" id="" required minlength="5">
+                            <span ng-show="myForms.name .$error.required">Email is required.</span>
+                        </div>
+                        <div class="col">
+                            Địa Chỉ
+                            <input type="text" name="" id="" minlength="10" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <input type="submit" type="button" ng-disabled="myForms.name.$dirty && myForms.name.$invalid || myForms.email.$dirty" class="btn btn-primary">
+                </div>
+              </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<script>
+        var app = angular.module('myApp', []);
+    
+        app.controller('MathController', function($scope) {
+        $scope.price = 0;
+        $scope.aMount = 0;
+        $scope.sizeS = ['L' , 'M'];
+        $scope.selectedG = $scope.sizeS[0];
+        $scope.listMenus = ['Matcha', 'Coffe', 'Pizza'];
+        $scope.selectedD = $scope.listMenus[0];
+        $scope.empInsurance = function() {
+            return (Number($scope.aMount) * (Number($scope.price)));
+        }
+    
+        $scope.incomeTax = function() {
+            if ($scope.selectedG == "L") {
+                switch($scope.selectedD) {
+                case "Matcha":  $scope.price = 25000;
+                                break;
+                case "Coffe":  $scope.price = 20000;
+                                break;
+                case "Pizza": $scope.price = 30000;
+                                break;
+                }
+            } else {
+                switch($scope.selectedD) {
+                    case "Matcha":  $scope.price = 23000;
+                                    break;
+                    case "Coffe": $scope.price = 18000;
+                                    break;
+                    case "Pizza": $scope.price = 25000;
+                                    break;
+                }
+            }
+        return (Number($scope.aMount) * (Number($scope.price) * 0.1))
+    
+        }
+        $scope.totalSalary = function(){
+            return (Number($scope.aMount) * (Number($scope.price))) + (Number($scope.aMount) * (Number($scope.price) * 0.1));
+        }
+        });
+</script>
+            
+</body>
+</html>
